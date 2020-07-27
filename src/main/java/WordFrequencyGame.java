@@ -7,21 +7,21 @@ public class WordFrequencyGame {
     private static final String BLANK_SPACE = " ";
     private static final String CALCULATE_ERROR = "Calculate Error";
 
-    public String getResult(String inputStr) {
+    public String getResult(String sentence) {
         try {
 
-            List<WordInfo> wordInfoList = calculateWordCount(inputStr);
+            List<WordInfo> wordInfos = calculateWordCount(sentence);
 
-            wordInfoList.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
+            wordInfos.sort((w1, w2) -> w2.getWordCount() - w1.getWordCount());
 
-            return generateWordFrequency(wordInfoList);
+            return generateWordFrequency(wordInfos);
         } catch (Exception e) {
             return CALCULATE_ERROR;
         }
     }
 
-    private List<WordInfo> calculateWordCount(String inputStr) {
-        List<String> words = Arrays.asList(inputStr.split(SPACE_REGEX));
+    private List<WordInfo> calculateWordCount(String sentence) {
+        List<String> words = Arrays.asList(sentence.split(SPACE_REGEX));
         List<WordInfo> wordInfos = new ArrayList<>();
         for (String uniqueWord: new HashSet<>(words)) {
             int count = (int)words.stream().filter(word -> word.equals(uniqueWord)).count();
@@ -30,11 +30,11 @@ public class WordFrequencyGame {
         return wordInfos;
     }
 
-    private String generateWordFrequency(List<WordInfo> wordInfoList) {
+    private String generateWordFrequency(List<WordInfo> wordInfos) {
         StringJoiner joiner = new StringJoiner(LINE_BREAK_DELIMITER);
-        for (WordInfo w : wordInfoList) {
-            String s = w.getValue() + BLANK_SPACE + w.getWordCount();
-            joiner.add(s);
+        for (WordInfo wordInfo : wordInfos) {
+            String wordFrequency = wordInfo.getValue() + BLANK_SPACE + wordInfo.getWordCount();
+            joiner.add(wordFrequency);
         }
         return joiner.toString();
     }
